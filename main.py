@@ -17,6 +17,7 @@ def main():
     df = pd.read_csv('covid.csv', usecols=[1])
     dataset = df.values
     dataset = df.astype('float32')
+    dataset = np.array(dataset)
     plt.plot(dataset)
     plt.show()
 
