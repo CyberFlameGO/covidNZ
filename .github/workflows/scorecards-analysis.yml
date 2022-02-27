@@ -28,13 +28,19 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
+      - name: Get branch name
+        id: branch-name
+        uses: CyberFlameGO/branch-names@6583ff7de9739def9bef81b43a1bf627710971db
+        
       - name: "Checkout code"
         uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+        if: steps.branch-name.outputs.is_default == 'true'
         with:
           persist-credentials: false
 
       - name: "Run analysis"
-        uses: ossf/scorecard-action@c26d965998c93eec99a71809bb29c8b3a814d8f8
+        uses: ossf/scorecard-action@d41742e86c9052ec71af12c8d83d4b8964662ded
+        if: steps.branch-name.outputs.is_default == 'true'
         with:
           results_file: results.sarif
           results_format: sarif
@@ -50,6 +56,7 @@ jobs:
       # Upload the results as artifacts (optional).
       - name: "Upload artifact"
         uses: actions/upload-artifact@2244c8200304ec9588bf9399eac622d9fadc28c4
+        if: steps.branch-name.outputs.is_default == 'true'
         with:
           name: SARIF file
           path: results.sarif
@@ -58,5 +65,6 @@ jobs:
       # Upload the results to GitHub's code scanning dashboard.
       - name: "Upload to code-scanning"
         uses: github/codeql-action/upload-sarif@117a67b0743599d091109168df5eb673f1641f6b
+        if: steps.branch-name.outputs.is_default == 'true'
         with:
           sarif_file: results.sarif
