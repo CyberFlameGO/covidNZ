@@ -33,7 +33,7 @@ jobs:
         uses: CyberFlameGO/branch-names@6583ff7de9739def9bef81b43a1bf627710971db
         
       - name: "Checkout code"
-        uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+        uses: actions/checkout@8f9e05e482293f862823fcca12d9eddfb3723131
         if: steps.branch-name.outputs.is_default == 'true'
         with:
           persist-credentials: false
